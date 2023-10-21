@@ -9,28 +9,28 @@ function getComputerChoice (){
 // -playerSelection and computerSelection, make playerSelection case-insensitive (rock, ROCK, RocK)
 function playRound(playerSelection, computerSelection){
     // Logic to decide who's the winner
-    if (playerSelection === computerSelection){
+    if(playerSelection === computerSelection){
         return "It's a tie round!"
-    } else if (playerSelection === "rock"){
+    } else if(playerSelection === "rock"){
         //computer = paper, scissor
-        if (computerSelection === "paper"){
-
+        if(computerSelection === "paper"){
+            return "You lost, paper beats rock!";
         } else{
-
+            return "You win, rock beats scissor!";
         }
-    } else if (playerSelection === "paper"){
+    } else if(playerSelection === "paper"){
         //computer = rock, scissor
-        if (computerSelection === "rock"){
-
+        if(computerSelection === "rock"){
+            return "You win, paper beats rock";
         } else{
-            
+            return "You lost, scissor beats paper";
         }
-    } else if (playerSelection === "scissor"){
+    } else if(playerSelection === "scissor"){
         //computer = rock, paper
-        if (computerSelection ==="rock"){
-
+        if(computerSelection ==="rock"){
+            return "You lost, rock beats scissor";
         } else{
-
+            return "You win, scissor beats paper";
         }
     } else {
         return "Game logic wrong";
@@ -41,14 +41,16 @@ function playRound(playerSelection, computerSelection){
 
 function game(){
     // each game is 5 rounds, so use function playRound function 5 times
-    score = [];
+    let playerScore = 0;
+    let computerScore = 0;
     for(let i=0; i < 5; i++){
         // use prompt() to get input from user
         let playerSelection = prompt("Pick rock paper scissor").toLowerCase();
-        // validate input playerSelection
+        // validate input playerSelection, if input wrong then re-prompt, else keep running the game
         if (playerSelection !== "rock" && playerSelection !== "paper" && playerSelection !== "scissor"){
-            let failMsg = "Wrong choice (you need to pick rock, paper or scissor)";
-            return failMsg;
+            playerSelection = prompt("Wrong choice (you need to pick rock, paper or scissor), Pick rock paper scissor").toLowerCase();
+        } else{
+            playRound(playerSelection, computerSelection)
         }
     }
     return '5 rounds each game';
