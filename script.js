@@ -1,8 +1,17 @@
 // create function that randomly return rock, paper or scissors called getComputerChoice
-function getComputerChoice (){
+function getComputerChoice(){
     let choices = ["rock", "paper", "scissor"];
     let choice = Math.floor(Math.random() * choices.length)
     return choices[choice];
+}
+
+function getUserChoice(){
+    // validate input playerSelection, if input wrong then re-prompt, use prompt() to get input from user
+    let choice = prompt("Pick rock paper scissor").toLowerCase();
+    while(choice !== "rock" && choice !== "paper" && choice !== "scissor"){
+        choice = prompt("Invalid choice, please pick rock paper or scissor").toLowerCase();
+    }
+    return choice;
 }
 
 // create function that plays a single round of the game. The function should take two parameters,
@@ -10,33 +19,18 @@ function getComputerChoice (){
 function playRound(playerSelection, computerSelection){
     // Logic to decide who's the winner
     if(playerSelection === computerSelection){
-        return "It's a tie round!"
-    } else if(playerSelection === "rock"){
-        //computer = paper, scissor
-        if(computerSelection === "paper"){
-            return "You lost, paper beats rock!";
-        } else{
-            return "You win, rock beats scissor!";
-        }
-    } else if(playerSelection === "paper"){
-        //computer = rock, scissor
-        if(computerSelection === "rock"){
-            return "You win, paper beats rock";
-        } else{
-            return "You lost, scissor beats paper";
-        }
-    } else if(playerSelection === "scissor"){
-        //computer = rock, paper
-        if(computerSelection ==="rock"){
-            return "You lost, rock beats scissor";
-        } else{
-            return "You win, scissor beats paper";
-        }
-    } else {
-        return "Game logic wrong";
+        return "It's a tie round!";
     }
-  
-    
+
+    if(
+        (playerSelection === "rock" && computerSelection === "scissor") ||
+        (playerSelection === "paper" && computerSelection === "rock") ||
+        (playerSelection === "scissor" && computerSelection === "paper")
+    ){
+        return `You win, ${playerSelection} beats ${computerSelection}`;
+    }else{
+        return `You lost, ${computerSelection} beats ${playerSelection}`;
+    }
 }
 
 function game(){
@@ -44,21 +38,27 @@ function game(){
     let playerScore = 0;
     let computerScore = 0;
     for(let i=0; i < 5; i++){
-        // use prompt() to get input from user
-        let playerSelection = prompt("Pick rock paper scissor").toLowerCase();
-        // validate input playerSelection, if input wrong then re-prompt, else keep running the game
-        if (playerSelection !== "rock" && playerSelection !== "paper" && playerSelection !== "scissor"){
-            playerSelection = prompt("Wrong choice (you need to pick rock, paper or scissor), Pick rock paper scissor").toLowerCase();
-        } else{
-            playRound(playerSelection, computerSelection)
+        // start the round
+        console.log(`Round ${i+1}`);
+        let playerSelection = getUserChoice();
+        let computerSelection = getComputerChoice();
+        let roundResult = playRound(playerSelection, computerSelection);
+        console.log(roundResult);
+        if(roundResult.includes('You win')){
+            playerScore++;
+        } else if(roundResult.includes('You lost')){
+            computerScore++;
         }
     }
-    return '5 rounds each game';
+    let endGame;
+    if(playerScore > computerScore){
+        endGame = `Congrats, you win the game! the score is ${playerScore} (you) - ${computerScore} (computer)`;
+    }else if(playerScore < computerScore){
+        endGame = `Sorry, you lost the game! the score is ${playerScore} (you) - ${computerScore} (computer)`;
+    }else{
+        endGame = `It's a tie game! the score is ${playerScore} (you) - ${computerScore} (computer)`;
+    }
+    return endGame;
 }
 
-
-let computerSelection = getComputerChoice();
-const result = playRound(playerSelection, getComputerChoice())
-console.log(result)
-
-
+console.log(game())
